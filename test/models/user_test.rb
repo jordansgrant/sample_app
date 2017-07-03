@@ -68,5 +68,14 @@ class UserTest < ActiveSupport::TestCase
 		assert_not @user.valid?, "#{invalid_addr} should be invalid"
 	end
   end
+  
+  test "email should be downcased" do
+    temp = @user
+    temp.email = "EXAMPLE@DOMAIN.COM"
+    temp.save
 
+    temp.reload.email
+
+    assert_equal temp.email, "example@domain.com"
+  end
 end
