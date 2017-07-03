@@ -79,4 +79,16 @@ class UserTest < ActiveSupport::TestCase
 
     assert_equal temp.email, "example@domain.com"
   end
+
+  test "password not blank" do
+    temp = @user
+    temp.password = temp.password_confirmation = " " * 6
+    assert_not temp.valid?
+  end
+
+  test "password is long enough" do
+    temp = @user
+    temp.password = temp.password_confirmation = "a" * 5
+    assert_not temp.valid?
+  end
 end
