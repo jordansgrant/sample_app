@@ -4,10 +4,11 @@ class SessionsController < ApplicationController
   end
   
   def create
-    sub = params[:session]
-    user = User.find_by(email: sub[:email].downcase)
-    if user && user.authenticate(sub[:password])
+    user = User.find_by(email: params[:session][:email].downcase)
+    if user != nil && user.authenticate(params[:session][:password])
       log_in user
+      remember user
+      params[:session][:remember_me] == '1' ? remember(user) : forget(user)
       redirect_to user_url(user)
     else
       flash.now[:danger] = "Invalid email or password"
